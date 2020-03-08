@@ -1,0 +1,13 @@
+FROM openjdk:8u181-jre-alpine3.8
+RUN mkdir -p /opt/app
+COPY maven /opt/app
+COPY docker-entrypoint.sh /opt/app/
+RUN chown -R nobody:nobody /opt/app
+RUN chmod +x /opt/app/docker-entrypoint.sh
+USER nobody
+WORKDIR /opt/app
+ENV jar_file ${docker.use.jar}
+ENV java_args ${java.arguments}
+ENTRYPOINT ["/opt/app/docker-entrypoint.sh"]
+EXPOSE 8080
+CMD ["app"]
